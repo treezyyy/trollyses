@@ -24,8 +24,14 @@ spring:
     encoding: UTF-8
     cache: false
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
 logging:
   level:
     root: INFO
     org.springframework.security: DEBUG
-    io.bootify.trollys: DEBUG
+    io.bootify.trollyses: DEBUG
