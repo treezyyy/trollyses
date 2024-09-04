@@ -32,6 +32,9 @@ public class DocumentFile {
     @Column(name = "data")
     private byte[] data;
 
+    @Column(name = "file_path")
+    private String filePath;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
