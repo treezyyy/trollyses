@@ -27,4 +27,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentFile> documentFiles;
+
+    @Column(name = "bonus_points")
+    private Integer bonusPoints = 0;
 }

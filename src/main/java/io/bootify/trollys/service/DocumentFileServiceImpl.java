@@ -5,6 +5,7 @@ import io.bootify.trollys.entity.User;
 import io.bootify.trollys.repos.DocumentFileRepository;
 import io.bootify.trollys.repos.UserRepository;
 import lombok.AllArgsConstructor;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class DocumentFileServiceImpl implements DocumentFileService{
     private final DocumentFileRepository documentFileRepository;
 
     @Override
-    public DocumentFile uploadFile(MultipartFile file){
+    public void uploadFile(MultipartFile file){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -52,29 +53,7 @@ public class DocumentFileServiceImpl implements DocumentFileService{
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to store file data", e);
         }
-        return documentFileRepository.save(documentFile);
-    }
-
-    @Override
-    public Optional<DocumentFile> getFile(Long fileId) {
-        return documentFileRepository.findById(fileId);
-    }
-
-    @Override
-    public List<DocumentFile> getAllFilesByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
-        return documentFileRepository.getAllFilesByUser(user);
-    }
-
-    @Override
-    public void deleteFile(Long fileId) {
-        documentFileRepository.deleteById(fileId);
-    }
-
-    @Override
-    public List<DocumentFile> getAllFiles() {
-        return documentFileRepository.findAll();
+        documentFileRepository.save(documentFile);
     }
 
 }
