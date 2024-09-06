@@ -27,7 +27,7 @@ public class DocumentFileController {
     public String uploadFile(@RequestParam("file") MultipartFile file,
                              RedirectAttributes redirectAttributes) {
         documentFileService.uploadFile(file);
-        redirectAttributes.addFlashAttribute("message", "File uploaded successfully!");
+        redirectAttributes.addFlashAttribute("message", "Файл загружен успешно!");
         return "redirect:/";
     }
 

@@ -29,7 +29,6 @@ public class EquipmentController {
             Equipment createdEquipment = equipmentService.create(dto);
             return new ResponseEntity<>(createdEquipment, HttpStatus.OK);
         } catch (Exception e) {
-            // Логирование ошибки для отладки
             System.err.println("Ошибка при создании оборудования: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

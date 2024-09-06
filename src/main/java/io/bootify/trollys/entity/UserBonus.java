@@ -24,6 +24,8 @@ public class UserBonus {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "points")
+    private Integer points;
 
     @Column(name = "date")
     private LocalDate date;
