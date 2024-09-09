@@ -12,22 +12,22 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="task")
-public class Task {
+@Table(name="task_history")
+public class TaskHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
-    private int points;
-
-    @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    @ManyToOne
+    private Task task;
 
     @ManyToOne
     private User user;
 
+    private LocalDateTime dateTaken; // когда была взята
+    private LocalDateTime dateCompleted; // когда выполнена
 
+    private int pointsEarned; // сколько баллов заработано
 
 }

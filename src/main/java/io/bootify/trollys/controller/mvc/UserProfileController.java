@@ -1,8 +1,10 @@
 package io.bootify.trollys.controller.mvc;
 
+import io.bootify.trollys.entity.Task;
 import io.bootify.trollys.entity.User;
 import io.bootify.trollys.repos.UserRepository;
 import io.bootify.trollys.service.BonusService;
+import io.bootify.trollys.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/profile")
@@ -20,6 +24,7 @@ public class UserProfileController {
 
     private final BonusService bonusService;
     private final UserRepository userRepository;
+    private final TaskService taskService;
 
 
     @GetMapping
@@ -29,6 +34,9 @@ public class UserProfileController {
         User user = userRepository.findByName(username)
                 .orElseThrow(() -> new IllegalArgumentException("Такой пользователь не найден: " + username));
 
+        List<Task> tasks = taskService.getUserTask(user);
+
+        model.addAttribute("tasks", tasks);
         model.addAttribute("user", user);
         model.addAttribute("bonusPoints", bonusService.getUserBonusPoints(user));
         return "profile";

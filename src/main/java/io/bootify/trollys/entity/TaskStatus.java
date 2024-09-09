@@ -4,7 +4,7 @@ public enum TaskStatus {
 
     AVAILABLE,
 
-    IN_PROGRESS,
+    TAKEN,
 
     COMPLETED
 

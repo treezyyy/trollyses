@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Доступные задачи</title>
+</head>
+<body>
+<h1>Доступные задачи</h1>
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<ul>
+    <li th:each="task : ${tasks}">
+        <span th:text="${task.description}"></span> - <span th:text="${task.points}"></span> баллов
+        <form th:action="@{/tasks/take}" method="post">
+            <input type="hidden" name="taskId" th:value="${task.id}">
+            <button type="submit">Взять задачу</button>
+        </form>
+    </li>
+</ul>
+
+<a href="/profile">Назад к профилю</a>
+</body>
+</html>
