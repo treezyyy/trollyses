@@ -6,19 +6,20 @@ import io.bootify.trollys.entity.TaskStatus;
 import io.bootify.trollys.entity.User;
 import io.bootify.trollys.repos.TaskHistoryRepository;
 import io.bootify.trollys.repos.TaskRepository;
+import io.bootify.trollys.repos.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskHistoryRepository taskHistoryRepository;
+    private final UserRepository userRepository;
 
     public List<Task> getAvailableTasks() {
         return taskRepository.findByStatus(TaskStatus.AVAILABLE);
@@ -46,4 +47,36 @@ public class TaskService {
     public List<Task> getUserTask(User user){
         return taskRepository.getUserTask(user);
     }
+
+
+    public void submitTask(Long taskId, User user) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Задача не найдена: " + taskId));
+        task.setStatus(TaskStatus.PENDING);
+        taskRepository.save(task);
+    }
+
+    public void confirmTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Задача не найдена"));
+
+        if (task.getStatus() == TaskStatus.PENDING) {
+            task.setStatus(TaskStatus.COMPLETED);
+            User user = task.getUser();
+            user.setBonusPoints(user.getBonusPoints() + task.getPoints());
+            userRepository.save(user);
+            taskRepository.save(task);
+        }
+    }
+
+    public void rejectTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Задача не найдена"));
+
+        if (task.getStatus() == TaskStatus.PENDING) {
+            task.setStatus(TaskStatus.REJECTED);
+            taskRepository.save(task);
+        }
+    }
+
 }

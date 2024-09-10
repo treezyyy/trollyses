@@ -14,13 +14,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean //возвращаем кастомный MyUserDetailsService, который напишем далее
+    @Bean
     public UserDetailsService userDetailsService(){
         return new MyUserDetailsService();
     }
@@ -32,18 +33,26 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return  http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/registration**").permitAll() //вход без авторизации
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/**").authenticated()) //с авторизацией и аутентификацией
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .formLogin(form -> form
+                        .successHandler(successHandler())                    // используем кастомный обработчик
+                        .permitAll())
                 .build();
     }
 
-    @Bean //Ставим степень кодировки, с которой кодировали пароль в базе
+    @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(5);
     }

@@ -6,6 +6,10 @@ public enum TaskStatus {
 
     TAKEN,
 
+    PENDING,
+
+    REJECTED,
+
     COMPLETED
 
 }

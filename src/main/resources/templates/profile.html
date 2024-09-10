@@ -16,6 +16,10 @@
 <ul>
     <li th:each="task : ${tasks}">
         <span th:text="${task.description}"></span> - <span th:text="${task.points}"></span> баллов
+        <form th:action="@{/profile/submit-task}" method="post" style="display:inline;">
+            <input type="hidden" th:value="${task.id}" name="taskId">
+            <button type="submit">Завершить задачу</button>
+        </form>
     </li>
 </ul>
 
