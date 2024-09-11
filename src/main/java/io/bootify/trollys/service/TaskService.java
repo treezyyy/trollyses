@@ -56,6 +56,7 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    @Transactional
     public void confirmTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Задача не найдена"));
@@ -64,6 +65,10 @@ public class TaskService {
             task.setStatus(TaskStatus.COMPLETED);
             User user = task.getUser();
             user.setBonusPoints(user.getBonusPoints() + task.getPoints());
+            TaskHistory taskHistory = taskHistoryRepository.findByTaskId(taskId)
+                    .orElseThrow(() -> new IllegalArgumentException("История задачи с ID " + taskId + " не найдена."));
+            taskHistory.setDataCompleted(LocalDateTime.now());
+            taskHistoryRepository.save(taskHistory);
             userRepository.save(user);
             taskRepository.save(task);
         }

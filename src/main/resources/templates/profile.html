@@ -1,31 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">>
 <head>
     <title>User Profile</title>
 </head>
 <body>
-<h1>Profile</h1>
-<p>Username: <span th:text="${user.name}"></span></p>
+<main layout:fragment="content">
+    <h1>Profile</h1>
+    <p>Username: <span th:text="${user.name}"></span></p>
 <p>Bonus Points: <span th:text="${bonusPoints}"></span></p>
 
-<form action="/profile/claim-bonus" method="post">
-    <button type="submit">Claim Daily Bonus</button>
-</form>
+    <form action="/profile/claim-bonus" method="post">
+        <button type="submit">Claim Daily Bonus</button>
+    </form>
 
-<h2>Ваш список взятых задач:</h2>
-<ul>
-    <li th:each="task : ${tasks}">
-        <span th:text="${task.description}"></span> - <span th:text="${task.points}"></span> баллов
-        <form th:action="@{/profile/submit-task}" method="post" style="display:inline;">
-            <input type="hidden" th:value="${task.id}" name="taskId">
-            <button type="submit">Завершить задачу</button>
-        </form>
-    </li>
-</ul>
+    <h2>Ваш список взятых задач:</h2>
+    <ul>
+        <li th:each="task : ${tasks}">
+            <span th:text="${task.description}"></span> - <span th:text="${task.points}"></span> баллов
+            <form th:action="@{/profile/submit-task}" method="post" style="display:inline;">
+                <input type="hidden" th:value="${task.id}" name="taskId">
+                <button type="submit">Завершить задачу</button>
+            </form>
+        </li>
+    </ul>
 
-<p th:if="${#lists.isEmpty(tasks)}">Нет взятых задач.</p>
+    <p th:if="${#lists.isEmpty(tasks)}">Нет взятых задач.</p>
 
-
-<p th:if="${message}" th:text="${message}"></p>
+    <p>Не забудьте загрузить отчет!</p>
+    <form th:action="@{/documents/upload}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="hidden" th:value="${userId}" name="userId"/>
+        <button type="submit">Upload</button>
+    </form>
+    <p th:if="${message}" th:text="${message}"></p>
+</main>
 </body>
 </html>

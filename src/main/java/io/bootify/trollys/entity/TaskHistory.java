@@ -25,9 +25,9 @@ public class TaskHistory {
     @ManyToOne
     private User user;
 
-    private LocalDateTime dateTaken; // когда была взята
-    private LocalDateTime dateCompleted; // когда выполнена
+    private LocalDateTime dateTaken;
+    private LocalDateTime dataCompleted;
 
-    private int pointsEarned; // сколько баллов заработано
+    private int pointsEarned;
 
 }
