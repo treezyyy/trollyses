@@ -1,15 +1,12 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ООО "ГОРЭЛЕКТРОТРАНС"</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/app.js"></script>
+    <title>Login</title>
 </head>
 <body>
+<p th:if="${#lists.isEmpty(tasks)}">Нет задач для подтверждения.</p>
 <table>
-    <tr th:each="task : ${pendingTasks}">
+    <tr th:each="task : ${tasks}">
         <td th:text="${task.description}"></td>
         <td th:text="${task.points}"></td>
         <td>
@@ -24,6 +21,5 @@
         </td>
     </tr>
 </table>
-
 </body>
 </html>

@@ -79,4 +79,8 @@ public class TaskService {
         }
     }
 
+    public List<Task> getPendingTasks(){
+        return taskRepository.getPendingTasks();
+    }
+
 }
