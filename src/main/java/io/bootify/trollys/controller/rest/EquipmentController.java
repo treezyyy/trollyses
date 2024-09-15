@@ -57,26 +57,6 @@ public class EquipmentController {
     }
 
     @Operation(
-            summary = "Удаление единицы оборудования",
-            description = "Позволяет удалить единицу борта по его id"
-    )
-    @DeleteMapping("del/{id}")
-    public HttpStatus delete(@PathVariable @Min(1) @Parameter(description = "ID оборудования") Long id){
-        equipmentService.delete(id);
-        return HttpStatus.OK;
-    }
-
-    @Operation(
-            summary = "Удаление единицы оборудования",
-            description = "Позволяет удалить единицу борта по его id"
-    )
-    @DeleteMapping("/{vin}")
-    public HttpStatus deleteByTransportVin(@PathVariable @Parameter(description = "VIN номер танспорта") String vin){
-        equipmentService.deleteByTransportVin(vin);
-        return HttpStatus.OK;
-    }
-
-    @Operation(
             summary = "Получение единицы оборудования",
             description = "Позволяет получить единицу борта по его id"
     )

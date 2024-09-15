@@ -6,6 +6,8 @@ import io.bootify.trollys.repos.DocumentFileRepository;
 import io.bootify.trollys.repos.UserRepository;
 import lombok.AllArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,8 +29,13 @@ public class DocumentFileServiceImpl implements DocumentFileService{
     private final UserRepository userRepository;
     private final DocumentFileRepository documentFileRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentFileServiceImpl.class);
+
     @Override
     public void uploadFile(MultipartFile file){
+
+        LOGGER.debug("Старт загрузки файла");
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -51,7 +58,8 @@ public class DocumentFileServiceImpl implements DocumentFileService{
             documentFile.setFilePath(filePath.toString());
 
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to store file data", e);
+            LOGGER.error("Ошибка данных файла: ", e);
+            throw new IllegalArgumentException("Ошибка данных файла: ", e);
         }
         documentFileRepository.save(documentFile);
     }

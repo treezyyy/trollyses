@@ -7,6 +7,8 @@ import io.bootify.trollys.mapper.TransportMapper;
 import io.bootify.trollys.repos.TransportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -18,8 +20,12 @@ public class TransportService {
 
     private final TransportRepository transportRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransportService.class);
+
+
     @Transactional
     public List<TransportDTO> readAll(){
+        LOGGER.debug("Старт чтения всех бортов");
         List<Transport> transportList = transportRepository.findAll();
         return transportList.stream()
                 .map(TransportMapper::toDTO)
@@ -29,7 +35,8 @@ public class TransportService {
     @Transactional
     public Transport create(TransportDTO transportDTO){
         if (transportRepository.existsById(transportDTO.getVin())) {
-            throw new IllegalArgumentException("Transport with VIN " + transportDTO.getVin() + " already exists");
+            LOGGER.error("Борта с VIN не найден {}", transportDTO.getVin());
+            throw new IllegalArgumentException("Борта с VIN " + transportDTO.getVin() + " не найден");
         }
         Transport transport = TransportMapper.toEntity(transportDTO);
         return transportRepository.save(transport);
@@ -38,7 +45,10 @@ public class TransportService {
     @Transactional
     public Transport update(String vin, TransportDTO dto) {
         Transport existingTransport = transportRepository.findById(vin)
-                .orElseThrow(() -> new EntityNotFoundException("Transport not found with vin: " + vin));
+                .orElseThrow(() -> {
+                    LOGGER.error("Борт с VIN не найден {}", vin);
+                    return new EntityNotFoundException("Борт с VIN " + vin);
+                });
         existingTransport.setGarageNumber(dto.getGarageNumber());
         existingTransport.setInfoteh(dto.getInfoteh());
         if (dto.getEquipmentList() != null) {
@@ -52,7 +62,7 @@ public class TransportService {
     @Transactional
     public void delete(String vin) {
         Transport transports = transportRepository.findById(vin)
-                .orElseThrow(() -> new EntityNotFoundException("Transport not found with vin: " + vin));
+                .orElseThrow(() -> new EntityNotFoundException("Борт с VIN " + vin));
         transportRepository.delete(transports);
     }
 
@@ -60,7 +70,7 @@ public class TransportService {
     public String findByVin(String vin) {
         Transport transport = transportRepository.findByVin(vin);
         if (transport == null) {
-            throw new EntityNotFoundException("Transport not found with infoteh: " + vin);
+            throw new EntityNotFoundException("Борт с VIN " + vin);
         }
         return transport.getInfoteh();
     }
