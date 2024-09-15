@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EquipmentService.class);
+
 
     @Operation(
             summary = "Получение оборудований борта",
@@ -42,7 +46,7 @@ public class EquipmentController {
             Equipment createdEquipment = equipmentService.create(dto);
             return new ResponseEntity<>(createdEquipment, HttpStatus.OK);
         } catch (Exception e) {
-            System.err.println("Ошибка при создании оборудования: " + e.getMessage());
+            LOGGER.error("Ошибка при добавлении оборудовния: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

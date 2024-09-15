@@ -34,8 +34,8 @@ spring:
       mode: always
 
 
-logging:
-  level:
-    root: INFO
-    org.springframework.security: DEBUG
-    io.bootify.trollyses: DEBUG
+##logging:
+##  level:
+##    root: INFO
+##    org.springframework.security: DEBUG
+##    io.bootify.trollyses: DEBUG
