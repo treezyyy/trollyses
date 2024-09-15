@@ -20,7 +20,7 @@
 ```
 3. Конфигурация базы данных
    Указать актуальные настройки для подключения к БД:
-```yaml
+```
 	spring:  
 	  datasource:  
 	    url: ${DB_URL:jdbc:postgresql://localhost:5432/board}  
