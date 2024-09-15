@@ -1,4 +1,4 @@
-### При возникновении при запуске, связанных с заполнением данных выполнить команду очисте данных в БД
+### При возникновении ошибок при запуске, связанных с заполнением данных выполнить команду очисте данных в БД
 ```dtd
 TRUNCATE TABLE document_file , equipment , task, task_history, transport, user_bonuses, users RESTART IDENTITY CASCADE;
 ```
