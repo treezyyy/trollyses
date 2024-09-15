@@ -9,7 +9,7 @@ public class UserMapper {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
-        userDTO.setPassword(user.getPassword()); // Пароль может быть исключен в зависимости от ситуации
+        userDTO.setPassword(user.getPassword());
         return userDTO;
     }
 

@@ -8,9 +8,8 @@ $(document).ready(function() {
         loadEquipment(vin);
         $('#VINname').text('VIN: ' + vin);
 
-        // Обработка отправки формы
         $('#equipment-form').off('submit').on('submit', function(event) {
-            event.preventDefault(); // Предотвратить отправку формы через браузер
+            event.preventDefault();
             addEquipment(vin);
         });
     } else {
@@ -37,7 +36,6 @@ function loadEquipment(vin) {
                     console.error('Некорректные данные оборудования:', equipment);
                 }
             });
-            // Добавляем обработчик кликов для изменения статуса
             $('.status-cell').click(function() {
                 var row = $(this).closest('tr');
                 var equipmentId = row.data('id');
@@ -63,7 +61,7 @@ function addEquipment(vin) {
         status: $('#status').val()
     };
 
-    console.log('Отправка данных оборудования:', equipmentData); // Отладочная строка
+    console.log('Отправка данных оборудования:', equipmentData);
 
     $.ajax({
         type: 'POST',
@@ -72,12 +70,12 @@ function addEquipment(vin) {
         data: JSON.stringify(equipmentData),
         success: function(response) {
             alert('Оборудование успешно добавлено');
-            loadEquipment(vin); // Перезагрузить таблицу оборудования
-            $('#equipment-form')[0].reset(); // Сбросить форму
+            loadEquipment(vin);
+            $('#equipment-form')[0].reset();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert('Ошибка при добавлении оборудования: ' + jqXHR.responseText);
-            console.error('Ошибка:', textStatus, errorThrown); // Отладочная строка
+            console.error('Ошибка:', textStatus, errorThrown);
         }
     });
 }
@@ -87,7 +85,7 @@ function updateStatus(id, status, element) {
         url: '/api/v1/equipment/update-status/' + id,
         type: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify({ status: status }), // Передаем статус в объекте
+        data: JSON.stringify({ status: status }),
         success: function(updatedEquipment) {
             console.log('Статус обновлен:', updatedEquipment);
             element.text(status);
@@ -98,7 +96,6 @@ function updateStatus(id, status, element) {
     });
 }
 
-// Функция для экранирования HTML
 function escapeHTML(str) {
     return str.replace(/[&<>"']/g, function(match) {
         const escape = {

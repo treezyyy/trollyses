@@ -17,8 +17,6 @@ public class EquipmentMapper { //TODO переделать мапперы с map
     }
 
     public static Equipment toEntity(EquipmentDTO dto) {
-        System.out.println(dto.getTransport_vin());
-        System.out.println(dto.getSerialNumber());
         Equipment equipment = new Equipment();
         equipment.setId(dto.getId());
         Transport transport = new Transport();

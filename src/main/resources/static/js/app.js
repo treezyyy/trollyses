@@ -1,17 +1,15 @@
 $(document).ready(function() {
-    // Загрузить транспортные средства при загрузке страницы
     loadTransports();
 
-    // Обработка отправки формы
     $('#transport-form').off('submit').on('submit', function(event) {
-        event.preventDefault(); // Предотвратить отправку формы через браузер
+        event.preventDefault();
         addTransport();
     });
 });
 
 function loadTransports() {
     $.get('/api/v1/transport/all', function(data) {
-        console.log('Получены данные:', data); // Строка для отладки
+        console.log('Получены данные:', data);
         var transportsTableBody = $('#transports-table-body');
         transportsTableBody.empty();
 
@@ -52,8 +50,8 @@ function addTransport() {
         data: JSON.stringify(transportData),
         success: function(response) {
             alert('Транспорт успешно добавлен');
-            loadTransports(); // Перезагрузить таблицу транспортных средств
-            $('#transport-form')[0].reset(); // Сбросить форму
+            loadTransports();
+            $('#transport-form')[0].reset();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert('Ошибка при добавлении транспорта: ' + jqXHR.responseText);
@@ -61,7 +59,6 @@ function addTransport() {
     });
 }
 
-// Функция для экранирования HTML
 function escapeHTML(str) {
     return str.replace(/[&<>"']/g, function(match) {
         const escape = {

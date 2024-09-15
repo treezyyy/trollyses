@@ -1,44 +1,66 @@
-# Trollys
+Финальный проект EGAR. Кабинет работника транспортной компании.
 
-This app was created with Bootify.io - tips on working with the code [can be found here](https://bootify.io/next-steps/).
-Feel free to contact us for further questions.
+## О проекте
+---
+Предназначен для управления транспортными средствами и их оборудованием в приложении. Пользователь имеет возможность работать с бортами и его оборудованием. Кроме того, для пользователей реализована система бонусов, которая вознаграждает пользователей за выполнение дополнительных задач и активность в приложении.
 
-## Development
+## Запуск проекта
 
-Update your local database connection in `application.yml` or create your own `application-local.yml` file to override
-settings for development.
-
-During development it is recommended to use the profile `local`. In IntelliJ `-Dspring.profiles.active=local` can be
-added in the VM options of the Run Configuration after enabling this property in "Modify options".
-
-Lombok must be supported by your IDE. For IntelliJ install the Lombok plugin and enable annotation processing -
-[learn more](https://bootify.io/next-steps/spring-boot-with-lombok.html).
-
-After starting the application it is accessible under `localhost:8080`.
-
-## Build
-
-The application can be built using the following command:
-
+---
+1. Клонирование репозитория
+   Требуется клонировать проект с ветки develop:
+``` bash
+	git clone -b develop https://github.com/treezyyy/trollyses.git 
+	cd trollyses 
 ```
-mvnw clean package
+2. Создание БД
+   Предусмотрено автоматическое создание и заполнение таблиц тестовыми данными. Требуется только создать базу данных с именем board в PostgresSQL:
+```sql
+	CREATE database board;
+```
+3. Конфигурация базы данных
+   Указать актуальные настройки для подключения к БД:
+```yaml
+	spring:  
+	  datasource:  
+	    url: ${DB_URL:jdbc:postgresql://localhost:5432/board}  
+	    username: ${DB_USERNAME:postgres}  
+	    password: ${DB_PASSWORD:admin}
+```
+4. Запуск и авторизация
+   Далее можем запустить проект и IDE. Проект доступен по адресу:
+```
+	http://localhost:8080
+```
+5. Данные для входа в приложение:
+   Авторизация как **пользователь**:
+   `login: u1`
+   `password: 1234`
+   Авторизация как **администратор**:
+   `login: a1`
+   `password: 1234`
+
+## Использование
+---
+Подробное описание информации по использованию проекта: [USAGE.md](./USAGE.md).
+
+## Использованные технологии и описание выполненных условий
+---
+
+Основные технологии применённые в проекте:
+*Java 17 версии, Spring 3.3.0, Spring Security, База данных - PostgresSQL (наличие query запросов. Пример: TaskRepository ), Swagger, Thymeleaf*
+### Выполнены все обязательные технологии/направления. Из дополнительных реализовано:
+- *Аутентификации и авторизации, обеспечение безопасности (Spring security)*
+- *Наличие авторизации.*
+- *Наличие базового распределения ролей (например user и admin)*
+
+## Swagger
+---
+Для перехода на шаблон Open API требуется авторизоваться в приложении и перейти по адресу:
+```
+http://localhost:8080/swagger-ui.html
 ```
 
-Start your application with the following command - here with the profile `production`:
-
-```
-java -Dspring.profiles.active=production -jar ./target/trollys-0.0.1-SNAPSHOT.jar
-```
-
-If required, a Docker image can be created with the Spring Boot plugin. Add `SPRING_PROFILES_ACTIVE=production` as
-environment variable when running the container.
-
-```
-mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=io.bootify/trollys
-```
-
-## Further readings
-
-* [Maven docs](https://maven.apache.org/guides/index.html)  
-* [Spring Boot reference](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)  
-* [Spring Data JPA reference](https://docs.spring.io/spring-data/jpa/reference/jpa.html)
+## Заключение
+---
+Благодарю за внимание к финальному проекту по обучаещему курсу от EGAR!
